@@ -27,7 +27,7 @@ public interface TagService extends GiftService<TagDTO> {
      * @return the by name
      * @throws ResourcesNotFoundException the resources not found exception
      */
-    TagDTO getByName(String name) throws ResourcesNotFoundException;
+    TagDTO getByName(String name);
 
     /**
      * Gets most popular user tag with highest order sum.
@@ -35,5 +35,5 @@ public interface TagService extends GiftService<TagDTO> {
      * @return the most popular user tag with highest order sum
      * @throws ResourcesNotFoundException the resources not found exception
      */
-    TagDTO getMostPopularUserTagWithHighestOrderSum() throws ResourcesNotFoundException;
+    TagDTO getMostPopularUserTagWithHighestOrderSum();
 }

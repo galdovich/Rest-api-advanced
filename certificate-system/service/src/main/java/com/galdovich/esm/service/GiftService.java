@@ -28,7 +28,7 @@ public interface GiftService<T> {
      * @param id the id
      * @return the optional
      */
-    T getById(long id) throws ResourcesNotFoundException;
+    T getById(long id);
 
     /**
      * Add T.
@@ -36,7 +36,7 @@ public interface GiftService<T> {
      * @param t the entity
      * @return the T
      */
-    T add(T t) throws AlreadyExistsException;
+    T add(T t);
 
     /**
      * Update optional.

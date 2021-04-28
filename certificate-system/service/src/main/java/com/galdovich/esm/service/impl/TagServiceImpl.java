@@ -78,7 +78,7 @@ public class TagServiceImpl implements TagService {
 
     @Transactional
     @Override
-    public TagDTO getMostPopularUserTagWithHighestOrderSum() throws ResourcesNotFoundException {
+    public TagDTO getMostPopularUserTagWithHighestOrderSum() {
         long userId = userDAO.getByHighestCostOfAllOrders();
         long tagId = tagDAO.getMostPopularUserTag(userId);
         return getById(tagId);

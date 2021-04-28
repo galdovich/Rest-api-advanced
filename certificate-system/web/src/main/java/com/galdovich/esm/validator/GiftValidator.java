@@ -21,7 +21,7 @@ public class GiftValidator {
     private static final String REGEX_NAME = "^.{1,50}";
     private static final String REGEX_DESCRIPTION = "^.{1,250}";
     private static final String REGEX_DURATION = "^[1-9]\\d{0,9}$";
-
+    
     /**
      * Method validates parameters, that must be match regular expressions if they not null
      *

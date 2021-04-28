@@ -70,7 +70,7 @@ public class UserController {
     /**
      * Get users order list.
      * Annotated by {@link GetMapping} with parameter value = "/{id}".
-     * Therefore, processes GET requests at /users/{id}/orders .
+     * Therefore, processes GET requests at /users/{id}/orders.
      *
      * @param id the users id that will be found. Inferred from the request URI
      * @return the found user
