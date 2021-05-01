@@ -7,9 +7,11 @@ package com.galdovich.esm.dao.util;
  * @version 1.0
  */
 public class ColumnName {
+
     /**
      * The column name constants for {@link com.galdovich.esm.entity.Tag}.
      */
+    public static final String TAGS = "tags";
     public static final String TAG_ID = "id";
     public static final String TAG_NAME = "name";
 

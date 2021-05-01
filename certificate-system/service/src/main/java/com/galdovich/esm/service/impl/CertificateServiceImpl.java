@@ -79,7 +79,7 @@ public class CertificateServiceImpl implements CertificateService {
         Set<TagDTO> tagDTOSet = new HashSet<>();
         if (certificate.getTags() != null) {
             Set<TagDTO> tags = certificate.getTags()
-                    .stream()
+                    .stream().filter(tagDTO -> tagDTO.getName() != null)
                     .map(tag -> tagService.isExists(tag.getName())
                             ? tagService.getByName(tag.getName())
                             : tagService.add(tag))
@@ -93,11 +93,16 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     public CertificateDTO update(long id, CertificateDTO certificateDTO) throws ResourcesNotFoundException {
         addTags(certificateDTO);
-        CertificateDTO found = getById(id);
-        updateNotEmptyField(certificateDTO, found);
-        found.setLastUpdateDate(LocalDateTime.now());
-        Certificate updated = certificateDAO.edit(GiftConverter.toCertificate(found));
-        return GiftConverter.toCertificateDTO(updated);
+        Optional<Certificate> certificate = certificateDAO.getById(id);
+        if (certificate.isPresent()) {
+            Certificate found = certificate.get();
+            updateNotEmptyField(certificateDTO, found);
+            found.setLastUpdateDate(LocalDateTime.now());
+            Certificate updated = certificateDAO.edit(found);
+            certificate = Optional.of(updated);
+        }
+        return certificate.map(GiftConverter::toCertificateDTO).orElseThrow(
+                () -> new ResourcesNotFoundException(MessageKey.CERTIFICATE_UPDATE_EXCEPTION, String.valueOf(id)));
     }
 
     @Transactional
@@ -108,21 +113,21 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateDAO.delete(id);
     }
 
-    private void updateNotEmptyField(CertificateDTO source, CertificateDTO found) {
+    private void updateNotEmptyField(CertificateDTO source, Certificate found) {
         if (source.getName() != null) {
             found.setName(source.getName());
         }
-        if (found.getDescription() != null) {
+        if (source.getDescription() != null) {
             found.setDescription(source.getDescription());
         }
-        if (found.getPrice() != null) {
+        if (source.getPrice() != null) {
             found.setPrice(source.getPrice());
         }
-        if (found.getDuration() != null) {
+        if (source.getDuration() != null) {
             found.setDuration(source.getDuration());
         }
-        if (found.getTags() != null) {
-            found.setTags(source.getTags());
+        if (source.getTags() != null) {
+            source.getTags().stream().map(GiftConverter::toTag).forEach(found::addTag);
         }
     }
 }

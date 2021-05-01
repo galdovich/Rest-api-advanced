@@ -67,7 +67,8 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDTO update(long id, TagDTO tagDTO) throws UnsupportedMethodException {
-        throw new UnsupportedMethodException(MessageKey.UNSUPPORTED_METHOD);
+        Tag found = tagDAO.edit(GiftConverter.toTag(tagDTO));
+        return GiftConverter.toTagDTO(found);
     }
 
     @Override

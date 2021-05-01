@@ -5,6 +5,7 @@ import com.galdovich.esm.dto.PageDTO;
 import com.galdovich.esm.dto.QueryParamsDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Interface {@code CertificateService} describes abstract behavior for working

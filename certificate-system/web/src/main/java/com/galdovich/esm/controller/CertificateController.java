@@ -53,12 +53,12 @@ public class CertificateController {
      * @return the added certificate
      */
     @PostMapping
-    public CertificateDTO add(@RequestBody CertificateDTO certificate) {
-        if (!new GiftValidator().isCertificateValid(certificate)) {
+    public CertificateDTO addGift(@RequestBody CertificateDTO certificate) {
+        if (!new GiftValidator().isAddedCertificateValid(certificate)) {
             throw new WrongParameterFormatException(MessageKey.ORDER_NOT_FOUND);
         }
         CertificateDTO found = certificateService.add(certificate);
-        add(found);
+        addLinks(found);
         return found;
     }
 
@@ -79,16 +79,16 @@ public class CertificateController {
 
     /**
      * Update certificate.
-     * Annotated by {@link PutMapping} with parameter value = "/{id}".
-     * Therefore, processes PUT requests at /gift/{id}.
+     * Annotated by {@link PatchMapping} with parameter value = "/{id}".
+     * Therefore, processes PUT requests at /gifts/{id}.
      *
      * @param id          the certificate id which will be updated. Inferred from the request URI
      * @param certificate the certificate with updated fields
      * @return the updated certificate
      */
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public CertificateDTO update(@PathVariable("id") long id, @RequestBody CertificateDTO certificate) {
-        if (!new GiftValidator().isCertificateValid(certificate)) {
+        if (!new GiftValidator().isUpdateCertificateValid(certificate)) {
             throw new WrongParameterFormatException(MessageKey.WRONG_PARAM_FORMAT);
         }
         CertificateDTO found = certificateService.update(id, certificate);
@@ -126,19 +126,21 @@ public class CertificateController {
      */
     @GetMapping
     public List<CertificateDTO> getCertificateByParams(@RequestParam(value = "name", required = false) String name,
-                                                       @RequestParam(value = "tag_name", required = false) String[] tagNames,
+                                                       @RequestParam(value = "tags_name", required = false) String[] tagNames,
                                                        @RequestParam(value = "description", required = false) String description,
                                                        @RequestParam(value = "create_date", required = false) String createDate,
                                                        @RequestParam(value = "sort", required = false) String sortType,
                                                        @RequestParam(value = "direction", required = false) String direction,
                                                        @RequestParam(value = "page", required = false, defaultValue = "1") int page,
                                                        @RequestParam(value = "size", required = false, defaultValue = "5") int size) {
-        if (!new GiftValidator().isParamsValid(name, tagNames, description, createDate, sortType, direction)) {
+        if (!(new GiftValidator().isParamsValid(name, tagNames, description, createDate, sortType, direction)
+                && new GiftValidator().isPageValid(page, size))) {
             throw new WrongParameterFormatException(MessageKey.WRONG_PARAM_FORMAT);
         }
         QueryParamsDTO queryParamsDTO = new QueryParamsDTO(name, tagNames, description, createDate,
                 sortType, direction);
         PageDTO pageDTO = new PageDTO(page, size);
+
         List<CertificateDTO> foundList = certificateService.getAll(queryParamsDTO, pageDTO);
         foundList.forEach(this::addLinks);
         return foundList;
@@ -151,5 +153,8 @@ public class CertificateController {
                 certificateDTO)).withRel(HateoasData.PUT));
         certificateDTO.add(linkTo(methodOn(CertificateController.class).delete(certificateDTO.getId()))
                 .withRel(HateoasData.DELETE));
+        certificateDTO.getTags().forEach(
+                tagDTO -> tagDTO.add(linkTo(methodOn(TagController.class).getById(tagDTO.getId())).withSelfRel())
+        );
     }
 }

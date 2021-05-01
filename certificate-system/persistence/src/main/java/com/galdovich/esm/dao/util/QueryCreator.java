@@ -3,13 +3,12 @@ package com.galdovich.esm.dao.util;
 import com.galdovich.esm.entity.Certificate;
 import com.galdovich.esm.util.QueryParams;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
 /**
@@ -45,6 +44,16 @@ public class QueryCreator {
         list.addAll(setCreatedDate(params, builder, root));
         addSortType(builder, criteria, root, params);
         return criteria.select(root).where(list.toArray(new Predicate[]{}));
+    }
+
+    public CriteriaUpdate<Certificate> createQuery(CriteriaBuilder builder, Map<String, Object> params, long id) {
+        CriteriaUpdate<Certificate> update = builder.createCriteriaUpdate(Certificate.class);
+        Root<Certificate> root = update.from(Certificate.class);
+        params.keySet().removeIf(t->t.equals(ColumnName.TAGS));
+        params.keySet().forEach(System.out::println);
+        params.keySet().forEach(c->update.set(c, params.get(c)));
+        update.where(builder.equal(root.get(ColumnName.CERTIFICATE_ID), id));
+        return update;
     }
 
     private List<Predicate> setName(QueryParams params,

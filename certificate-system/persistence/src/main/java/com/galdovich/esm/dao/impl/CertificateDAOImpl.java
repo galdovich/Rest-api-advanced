@@ -13,7 +13,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -81,6 +83,22 @@ public class CertificateDAOImpl implements CertificateDAO {
         entityManager.createNativeQuery(SQLQuery.REMOVE_CERTIFICATE_HAS_TAG)
                 .setParameter(1, id)
                 .executeUpdate();
+    }
+
+    public void addTags(long certificateId, long tagId){
+        entityManager.createNativeQuery("insert into certificate_has_tag (certificate_id, tag_id) values (?,?)")
+        .setParameter(1,certificateId)
+        .setParameter(2, tagId)
+        .executeUpdate();
+    }
+
+    @Transactional
+    @Override
+    public void updateSomeField(long id, Map<String, Object> requestParams) {
+        CriteriaBuilder cBuilder = entityManager.getCriteriaBuilder();
+        CriteriaUpdate<Certificate> criteria = new QueryCreator().createQuery(cBuilder, requestParams, id);
+        entityManager.createQuery(criteria).executeUpdate();
+
     }
 }
 

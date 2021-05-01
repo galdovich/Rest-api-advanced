@@ -31,7 +31,7 @@ public enum SortType {
     /**
      * Created date sort type.
      */
-    CREATED_DATE("created_date");
+    CREATE_DATE("create_date");
 
     private String name;
 

@@ -13,6 +13,7 @@ public class MessageKey {
      */
     public static final String CERTIFICATE_NOT_FOUND_BY_ID = "certificate.notFoundById";
     public static final String CERTIFICATE_ALREADY_EXISTS = "certificate.alreadyExists";
+    public static final String CERTIFICATE_UPDATE_EXCEPTION = "certificate.updateException";
 
     /**
      * Keys for exception messages associated with {@link com.galdovich.esm.entity.Order}.

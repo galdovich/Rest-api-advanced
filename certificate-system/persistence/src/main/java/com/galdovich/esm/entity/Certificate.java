@@ -163,6 +163,9 @@ public class Certificate implements GiftEntity, Serializable {
     }
 
     public void addTag(Tag tag) {
+        if (this.tags == null) {
+            this.tags = new HashSet<>();
+        }
         this.tags.add(tag);
     }
 

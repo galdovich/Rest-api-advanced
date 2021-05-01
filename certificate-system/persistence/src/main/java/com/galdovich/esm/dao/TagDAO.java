@@ -44,4 +44,6 @@ public interface TagDAO extends GiftDAO<Tag> {
      * @return the optional
      */
     Optional<Tag> getByName(String name);
+
+    boolean isExistsCertificateHasTag(long certificateId, long tagId);
 }

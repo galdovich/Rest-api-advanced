@@ -36,4 +36,5 @@ public interface TagService extends GiftService<TagDTO> {
      * @throws ResourcesNotFoundException the resources not found exception
      */
     TagDTO getMostPopularUserTagWithHighestOrderSum();
+
 }

@@ -5,6 +5,7 @@ import com.galdovich.esm.util.Page;
 import com.galdovich.esm.util.QueryParams;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -35,7 +36,11 @@ public interface CertificateDAO extends GiftDAO<Certificate> {
     /**
      * Get certificate by name.
      *
-     * @param id id of certificate
+     * @param id id of certificateGift
      */
     void deleteCertificateHasTag(long id);
+
+    void updateSomeField(long id, Map<String, Object> requestParams);
+
+    void addTags(long certificateId, long tagId);
 }

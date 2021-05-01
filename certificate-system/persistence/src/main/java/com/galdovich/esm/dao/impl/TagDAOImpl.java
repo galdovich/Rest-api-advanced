@@ -79,4 +79,13 @@ public class TagDAOImpl implements TagDAO {
                 .setParameter(1, tagId)
                 .executeUpdate();
     }
+
+    @Override
+    public boolean isExistsCertificateHasTag(long certificateId, long tagId) {
+        List<Object> id = entityManager.createNativeQuery("select tag_id from certificate_has_tag where certificate_id = ?")
+                .setParameter(1, certificateId)
+                .getResultList();
+        System.out.println(id);
+        return id.contains(tagId);
+    }
 }

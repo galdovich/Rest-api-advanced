@@ -16,6 +16,9 @@ public class CertificateDTO extends RepresentationModel<CertificateDTO> {
     private LocalDateTime lastUpdateDate;
     private Set<TagDTO> tags;
 
+    public CertificateDTO() {
+    }
+
     public CertificateDTO(Long id,
                           String name,
                           String description,

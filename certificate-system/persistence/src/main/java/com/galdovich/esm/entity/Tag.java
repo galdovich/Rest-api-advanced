@@ -20,6 +20,10 @@ public class Tag implements GiftEntity, Serializable {
     public Tag() {
     }
 
+    public Tag(String name) {
+        this.name = name;
+    }
+
     public Tag(long id) {
         this.id = id;
     }
