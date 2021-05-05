@@ -10,12 +10,8 @@ import com.galdovich.esm.service.UserService;
 import com.galdovich.esm.util.HateoasData;
 import com.galdovich.esm.validator.GiftValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
