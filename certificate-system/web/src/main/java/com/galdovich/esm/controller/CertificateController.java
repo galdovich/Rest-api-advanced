@@ -53,6 +53,7 @@ public class CertificateController {
      * @return the added certificate
      */
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public CertificateDTO addGift(@RequestBody CertificateDTO certificate) {
         if (!new GiftValidator().isAddedCertificateValid(certificate)) {
             throw new WrongParameterFormatException(MessageKey.ORDER_NOT_FOUND);
@@ -133,14 +134,12 @@ public class CertificateController {
                                                        @RequestParam(value = "direction", required = false) String direction,
                                                        @RequestParam(value = "page", required = false, defaultValue = "1") int page,
                                                        @RequestParam(value = "size", required = false, defaultValue = "5") int size) {
-        if (!(new GiftValidator().isParamsValid(name, tagNames, description, createDate, sortType, direction)
-                && new GiftValidator().isPageValid(page, size))) {
+        if (!new GiftValidator().isParamsValid(name, tagNames, description, createDate, sortType, direction)) {
             throw new WrongParameterFormatException(MessageKey.WRONG_PARAM_FORMAT);
         }
         QueryParamsDTO queryParamsDTO = new QueryParamsDTO(name, tagNames, description, createDate,
                 sortType, direction);
         PageDTO pageDTO = new PageDTO(page, size);
-
         List<CertificateDTO> foundList = certificateService.getAll(queryParamsDTO, pageDTO);
         foundList.forEach(this::addLinks);
         return foundList;

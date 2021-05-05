@@ -1,5 +1,6 @@
 package com.galdovich.esm.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
@@ -77,6 +78,7 @@ public class CertificateDTO extends RepresentationModel<CertificateDTO> {
         this.duration = duration;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     public LocalDateTime getCreateDate() {
         return createDate;
     }
@@ -85,6 +87,7 @@ public class CertificateDTO extends RepresentationModel<CertificateDTO> {
         this.createDate = createDate;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     public LocalDateTime getLastUpdateDate() {
         return lastUpdateDate;
     }

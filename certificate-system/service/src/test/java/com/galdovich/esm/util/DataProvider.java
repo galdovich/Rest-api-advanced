@@ -47,6 +47,7 @@ public class DataProvider {
     public static final Certificate ADDING_CERTIFICATE;
     public static final Certificate UPDATING_CERTIFICATE;
     public static final Order ADDING_ORDER;
+    public static final QueryParamsDTO QUERY_PARAMS_DTO;
 
     static {
         TAG_DTO = new TagDTO(1L, "Вязание");
@@ -117,5 +118,6 @@ public class DataProvider {
         ORDER_DTO_LIST = Collections.nCopies(10, ORDER_DTO);
         ORDER_DTO_LIST_LIMIT = Collections.nCopies(LIMIT, ORDER_DTO);
         ADDING_ORDER = new Order(1L, 1L);
+        QUERY_PARAMS_DTO = new QueryParamsDTO(null, null, null, null, null, null);
     }
 }

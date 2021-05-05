@@ -80,9 +80,13 @@ public class CertificateServiceImpl implements CertificateService {
         if (certificate.getTags() != null) {
             Set<TagDTO> tags = certificate.getTags()
                     .stream().filter(tagDTO -> tagDTO.getName() != null)
-                    .map(tag -> tagService.isExists(tag.getName())
-                            ? tagService.getByName(tag.getName())
-                            : tagService.add(tag))
+                    .map(tag -> {
+                        TagDTO tagDTO = new TagDTO();
+                        tagDTO = tagService.isExists(tag.getName())
+                                ? tagDTO
+                                : tagService.add(tag);
+                        return tagDTO;
+                    })
                     .collect(Collectors.toSet());
             tagDTOSet.addAll(tags);
         }

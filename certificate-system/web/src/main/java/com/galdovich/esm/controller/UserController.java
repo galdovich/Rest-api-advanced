@@ -3,12 +3,19 @@ package com.galdovich.esm.controller;
 import com.galdovich.esm.dto.OrderDTO;
 import com.galdovich.esm.dto.PageDTO;
 import com.galdovich.esm.dto.UserDTO;
+import com.galdovich.esm.exception.MessageKey;
+import com.galdovich.esm.exception.WrongParameterFormatException;
 import com.galdovich.esm.service.OrderService;
 import com.galdovich.esm.service.UserService;
 import com.galdovich.esm.util.HateoasData;
+import com.galdovich.esm.validator.GiftValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -79,6 +86,9 @@ public class UserController {
     public List<OrderDTO> getUserOrders(@PathVariable(name = "id") long id,
                                         @RequestParam(required = false, defaultValue = "1") int page,
                                         @RequestParam(required = false, defaultValue = "5") int size) {
+        if (!(new GiftValidator().isPageValid(page, size))) {
+            throw new WrongParameterFormatException(MessageKey.WRONG_PARAM_FORMAT);
+        }
         PageDTO pageDTO = new PageDTO(page, size);
         List<OrderDTO> foundList = orderService.getUserOrders(pageDTO, id);
         foundList.forEach(this::addLinks);
@@ -99,3 +109,4 @@ public class UserController {
                 .getById(orderDTO.getCertificateId())).withRel(HateoasData.CERTIFICATE));
     }
 }
+

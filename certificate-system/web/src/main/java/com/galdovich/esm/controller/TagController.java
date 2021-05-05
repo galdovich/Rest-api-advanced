@@ -2,8 +2,11 @@ package com.galdovich.esm.controller;
 
 import com.galdovich.esm.dto.PageDTO;
 import com.galdovich.esm.dto.TagDTO;
+import com.galdovich.esm.exception.MessageKey;
+import com.galdovich.esm.exception.WrongParameterFormatException;
 import com.galdovich.esm.service.TagService;
 import com.galdovich.esm.util.HateoasData;
+import com.galdovich.esm.validator.GiftValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

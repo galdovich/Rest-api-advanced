@@ -1,9 +1,12 @@
 package com.galdovich.esm.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
@@ -50,5 +53,18 @@ public class CustomLocalResolver extends AcceptHeaderLocaleResolver implements W
         rs.setDefaultEncoding(encoding);
         rs.setUseCodeAsDefaultMessage(true);
         return rs;
+    }
+
+    /**
+     * Create bean {@link LocalValidatorFactoryBean} which provides
+     * a custom validator instead of the one created by default.
+     *
+     * @return the message source
+     */
+    @Bean
+    public LocalValidatorFactoryBean getValidator() {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setValidationMessageSource(messageSource());
+        return bean;
     }
 }

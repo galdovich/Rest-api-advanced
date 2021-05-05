@@ -8,7 +8,6 @@ import com.galdovich.esm.entity.Tag;
 import com.galdovich.esm.exception.AlreadyExistsException;
 import com.galdovich.esm.exception.MessageKey;
 import com.galdovich.esm.exception.ResourcesNotFoundException;
-import com.galdovich.esm.exception.UnsupportedMethodException;
 import com.galdovich.esm.service.TagService;
 import com.galdovich.esm.util.GiftConverter;
 import com.galdovich.esm.util.Page;
@@ -66,7 +65,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDTO update(long id, TagDTO tagDTO) throws UnsupportedMethodException {
+    public TagDTO update(long id, TagDTO tagDTO) {
         Tag found = tagDAO.edit(GiftConverter.toTag(tagDTO));
         return GiftConverter.toTagDTO(found);
     }

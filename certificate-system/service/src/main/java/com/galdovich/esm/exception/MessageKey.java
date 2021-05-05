@@ -28,6 +28,13 @@ public class MessageKey {
     public static final String TAG_ALREADY_EXISTS = "tag.alreadyExists";
 
     /**
+     * Keys for exception messages associated with {@link com.galdovich.esm.util.Page}.
+     */
+    public static final String INCORRECT_PAGE_NUMBER = "{page.incorrectNumber}";
+    public static final String INCORRECT_PAGE_SIZE = "{page.incorrectSize}";
+    public static final String INCORRECT_ID = "{validation.incorrectId}";
+
+    /**
      * Keys for exception messages associated with {@link com.galdovich.esm.entity.User}.
      */
     public static final String USER_NOT_FOUND = "user.notFoundById";

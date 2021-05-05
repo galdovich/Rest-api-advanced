@@ -7,7 +7,6 @@ import com.galdovich.esm.dto.TagDTO;
 import com.galdovich.esm.entity.Tag;
 import com.galdovich.esm.exception.AlreadyExistsException;
 import com.galdovich.esm.exception.ResourcesNotFoundException;
-import com.galdovich.esm.exception.UnsupportedMethodException;
 import com.galdovich.esm.service.TagService;
 import com.galdovich.esm.util.DataProvider;
 import com.galdovich.esm.util.Page;
@@ -75,11 +74,6 @@ class TagServiceImplTest {
         when(tagDAO.getByName(any(String.class))).thenReturn(Optional.of(DataProvider.TAG));
         when(tagDAO.add(any(Tag.class))).thenReturn(DataProvider.TAG);
         assertThrows(AlreadyExistsException.class, () -> service.add(DataProvider.TAG_DTO));
-    }
-
-    @Test
-    void update() {
-        assertThrows(UnsupportedMethodException.class, () -> service.update(1L, DataProvider.TAG_DTO));
     }
 
     @Test

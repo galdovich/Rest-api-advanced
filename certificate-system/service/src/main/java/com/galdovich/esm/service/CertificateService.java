@@ -3,9 +3,10 @@ package com.galdovich.esm.service;
 import com.galdovich.esm.dto.CertificateDTO;
 import com.galdovich.esm.dto.PageDTO;
 import com.galdovich.esm.dto.QueryParamsDTO;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Interface {@code CertificateService} describes abstract behavior for working
@@ -14,6 +15,7 @@ import java.util.Map;
  * @author Alexander Galdovich
  * @version 1.0
  */
+@Validated
 public interface CertificateService extends GiftService<CertificateDTO> {
 
     /**
@@ -22,5 +24,5 @@ public interface CertificateService extends GiftService<CertificateDTO> {
      * @param params criteria parameters
      * @return the list of DTO certificates
      */
-    List<CertificateDTO> getAll(QueryParamsDTO params, PageDTO pageDTO);
+    List<CertificateDTO> getAll(QueryParamsDTO params, @Valid PageDTO pageDTO);
 }

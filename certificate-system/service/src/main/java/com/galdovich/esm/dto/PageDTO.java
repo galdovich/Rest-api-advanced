@@ -1,7 +1,16 @@
 package com.galdovich.esm.dto;
 
+import com.galdovich.esm.exception.MessageKey;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 public class PageDTO {
+
+    @Min(value = 1, message = MessageKey.INCORRECT_PAGE_NUMBER)
     private int page;
+    @Min(value = 1, message = MessageKey.INCORRECT_PAGE_SIZE)
+    @Max(value = 50, message = MessageKey.INCORRECT_PAGE_SIZE)
     private int size;
 
     public PageDTO(int page, int size) {

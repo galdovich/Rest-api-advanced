@@ -1,5 +1,6 @@
 package com.galdovich.esm.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
@@ -36,6 +37,7 @@ public class OrderDTO extends RepresentationModel<OrderDTO> {
         this.price = price;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
