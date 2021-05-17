@@ -33,6 +33,13 @@ public class ServiceException extends RuntimeException {
     }
 
     /**
+     * Instantiates a new service exception.
+     *
+     */
+    public ServiceException() {
+    }
+
+    /**
      * Gets message key.
      *
      * @return the message key

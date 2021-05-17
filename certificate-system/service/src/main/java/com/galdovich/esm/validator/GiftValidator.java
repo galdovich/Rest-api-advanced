@@ -62,6 +62,24 @@ public class GiftValidator {
     }
 
     /**
+     * Method validates one updated field of the Certificate DTO. Only one field can't be empty
+     *
+     * @param certificate the certificate dto
+     * @return the boolean
+     */
+    public boolean isUpdateOneFieldValid(CertificateDTO certificate) {
+        if(countNotEmptyFields(certificate) > 1){
+            return false;
+        }
+        return isNameValidOptional(certificate.getName()) &&
+                isDescriptionValidOptional(certificate.getDescription()) &&
+                isPriceValidOptional(certificate.getPrice()) &&
+                isDurationValidOptional(certificate.getDuration()) &&
+                isCreateDateValidOptional(certificate.getCreateDate()) &&
+                isTagsValidOptional(certificate.getTags());
+    }
+
+    /**
      * Method validates adding certificate dto. Parameters can be null
      *
      * @param certificate the certificate dto
@@ -122,7 +140,7 @@ public class GiftValidator {
      * @return the boolean
      */
     public boolean isCreateDateValidOptional(LocalDateTime createDate) {
-        if(createDate != null){
+        if (createDate != null) {
             return createDate.toString().matches(REGEX_CREATE_DATE);
         }
         return true;
@@ -240,6 +258,35 @@ public class GiftValidator {
      */
     public boolean isDescriptionValid(String description) {
         return description != null && description.matches(REGEX_DESCRIPTION);
+    }
+
+    public int countNotEmptyFields(CertificateDTO certificateDTO) {
+        int result = 0;
+        if (certificateDTO.getId() != null) {
+            result++;
+        }
+        if (certificateDTO.getName() != null) {
+            result++;
+        }
+        if (certificateDTO.getDescription() != null) {
+            result++;
+        }
+        if (certificateDTO.getDuration() != null) {
+            result++;
+        }
+        if (certificateDTO.getPrice() != null) {
+            result++;
+        }
+        if (certificateDTO.getCreateDate() != null) {
+            result++;
+        }
+        if (certificateDTO.getLastUpdateDate() != null) {
+            result++;
+        }
+        if (certificateDTO.getTags() != null) {
+            result++;
+        }
+        return result;
     }
 
 }

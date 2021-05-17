@@ -51,8 +51,18 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public Optional<User> getUserByEmail(String email) {
+        return entityManager.createQuery("select u from User u where u.email=?1", User.class)
+                .setParameter(1, email)
+                .getResultList()
+                .stream()
+                .findAny();
+    }
+
+    @Override
     public User add(User user) {
-        throw new UnsupportedOperationException();
+        entityManager.persist(user);
+        return user;
     }
 
     @Override

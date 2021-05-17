@@ -37,7 +37,9 @@ public class MessageKey {
     /**
      * Keys for exception messages associated with {@link com.galdovich.esm.entity.User}.
      */
-    public static final String USER_NOT_FOUND = "user.notFoundById";
+    public static final String USER_NOT_FOUND_BY_ID = "user.notFoundById";
+    public static final String USER_NOT_FOUND_BY_EMAIL = "user.notFoundByEmail";
+    public static final String USER_ALREADY_EXISTS = "user.alreadyExists";
 
     /**
      * Keys for exception messages associated with wrong input parameters.

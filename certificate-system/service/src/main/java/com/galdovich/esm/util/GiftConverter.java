@@ -128,7 +128,26 @@ public class GiftConverter {
      * @return the user dto
      */
     public static UserDTO toUserDTO(User user) {
-        return new UserDTO(user.getId(), user.getName());
+        return UserDTO.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .password(user.getPassword()).build();
+    }
+
+    /**
+     * Convert User from authenticationDTO.
+     *
+     * @param registerDTO input data
+     * @return the user
+     */
+    public static User toUser(RegisterDTO registerDTO) {
+        return User.builder()
+                .name(registerDTO.getName())
+                .email(registerDTO.getEmail())
+                .password(registerDTO.getPassword())
+                .build();
     }
 
     /**

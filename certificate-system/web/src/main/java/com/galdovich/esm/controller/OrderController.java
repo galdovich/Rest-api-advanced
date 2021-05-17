@@ -8,9 +8,12 @@ import com.galdovich.esm.service.OrderService;
 import com.galdovich.esm.util.HateoasData;
 import com.galdovich.esm.validator.GiftValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -52,6 +55,7 @@ public class OrderController {
      * @return the list of found orders
      */
     @GetMapping
+    @PreAuthorize("hasAuthority('authority:write')")
     public List<OrderDTO> getAll(@RequestParam(required = false, defaultValue = "1") int page,
                                  @RequestParam(required = false, defaultValue = "5") int size) {
         PageDTO pageDTO = new PageDTO(page, size);
@@ -69,33 +73,11 @@ public class OrderController {
      * @return the found order dto
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('authority:read')")
     public OrderDTO getOrderById(@PathVariable long id) {
         OrderDTO foundOrderDto = orderService.getById(id);
         addLinks(foundOrderDto);
         return foundOrderDto;
-    }
-
-    /**
-     * Get order by user id.
-     * Annotated by {@link GetMapping} with parameter value = "/users/{userId}".
-     * Therefore, processes GET requests at /orders/users/{userId}.
-     *
-     * @param userId the user id which orders will be found. Inferred from the request URI
-     * @param page   the number of page for pagination
-     * @param size   the size of page for pagination
-     * @return the list of all user's orders dto
-     */
-    @GetMapping("/users/{userId}")
-    public List<OrderDTO> getAllByUserId(@PathVariable(name = "userId") long userId,
-                                         @RequestParam(required = false, defaultValue = "1") int page,
-                                         @RequestParam(required = false, defaultValue = "5") int size) {
-        if (!(new GiftValidator().isPageValid(page, size))) {
-            throw new WrongParameterFormatException(MessageKey.WRONG_PARAM_FORMAT);
-        }
-        PageDTO pageDTO = new PageDTO(page, size);
-        List<OrderDTO> foundList = orderService.getUserOrders(pageDTO, userId);
-        foundList.forEach(this::addLinks);
-        return foundList;
     }
 
     /**
@@ -108,6 +90,7 @@ public class OrderController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('authority:read')")
     public OrderDTO addOrder(@RequestBody OrderDTO orderDTO) {
         OrderDTO addedOrder = orderService.add(orderDTO);
         addLinks(addedOrder);

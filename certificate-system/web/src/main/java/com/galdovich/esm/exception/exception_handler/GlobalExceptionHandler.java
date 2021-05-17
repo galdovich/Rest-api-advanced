@@ -50,7 +50,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String message = creator.createMessage(e.getMessageKey(), e.getMessageParameter());
         ExceptionResponse errorDetails = new ExceptionResponse(message,
                 ExceptionCode.RESOURCE_EXISTS);
-        return new ResponseEntity<>(errorDetails, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDetails, new HttpHeaders(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

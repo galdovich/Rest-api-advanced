@@ -2,6 +2,7 @@ package com.galdovich.esm.dao.impl;
 
 import com.galdovich.esm.config.PersistenceConfig;
 import com.galdovich.esm.dao.UserDAO;
+import com.galdovich.esm.entity.Role;
 import com.galdovich.esm.entity.User;
 import com.galdovich.esm.util.Page;
 import org.junit.jupiter.api.Test;
@@ -84,5 +85,34 @@ class UserDAOImplTest {
     @Transactional
     void delete() {
         assertTrue(userDAO.delete(145L));
+    }
+
+    static Stream<Arguments> argsGetByEmail() {
+        return Stream.of(
+                Arguments.of("wbrigg0@noaa.gov", true),
+                Arguments.of("sdundridge4@nature.com", true),
+                Arguments.of("mbeakes7@home.p", false),
+                Arguments.of("ncartmael8@forbes", false)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("argsGetByEmail")
+    void getUserByEmailPositive(String email, boolean result) {
+        Optional<User> user = userDAO.getUserByEmail(email);
+        assertEquals(user.isPresent(), result);
+    }
+
+    @Test
+    @Transactional
+    void addUserTestPositive() {
+        User user = User.builder()
+                .name("Sajjo")
+                .email("spllld@mail.com")
+                .password("$2y$12$5RQ82X0tSGBJ4z35oEF8iO0ke4NA4Oo74ibskI1KjMFMDzAQOtygi ")
+                .role(Role.USER)
+                .build();
+        User added = userDAO.add(user);
+        assertEquals(added, user);
     }
 }

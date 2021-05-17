@@ -6,6 +6,7 @@ import com.galdovich.esm.dto.QueryParamsDTO;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -24,5 +25,5 @@ public interface CertificateService extends GiftService<CertificateDTO> {
      * @param params criteria parameters
      * @return the list of DTO certificates
      */
-    List<CertificateDTO> getAll(QueryParamsDTO params, @Valid PageDTO pageDTO);
+    List<CertificateDTO> getAll(QueryParamsDTO params, @Valid @NotNull PageDTO pageDTO);
 }

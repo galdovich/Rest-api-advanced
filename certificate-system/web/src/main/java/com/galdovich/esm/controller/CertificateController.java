@@ -11,8 +11,10 @@ import com.galdovich.esm.validator.GiftValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -54,6 +56,7 @@ public class CertificateController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('authority:write')")
     public CertificateDTO addGift(@RequestBody CertificateDTO certificate) {
         if (!new GiftValidator().isAddedCertificateValid(certificate)) {
             throw new WrongParameterFormatException(MessageKey.ORDER_NOT_FOUND);
@@ -72,6 +75,7 @@ public class CertificateController {
      * @return the found certificate
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('authority:read')")
     public CertificateDTO getById(@PathVariable("id") long id) {
         CertificateDTO found = certificateService.getById(id);
         addLinks(found);
@@ -88,8 +92,29 @@ public class CertificateController {
      * @return the updated certificate
      */
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('authority:write')")
     public CertificateDTO update(@PathVariable("id") long id, @RequestBody CertificateDTO certificate) {
         if (!new GiftValidator().isUpdateCertificateValid(certificate)) {
+            throw new WrongParameterFormatException(MessageKey.WRONG_PARAM_FORMAT);
+        }
+        CertificateDTO found = certificateService.update(id, certificate);
+        addLinks(found);
+        return found;
+    }
+
+    /**
+     * Update one field of certificate.
+     * Annotated by {@link PatchMapping} with parameter value = "/{id}".
+     * Therefore, processes PUT requests at /gifts/one-field/{id}.
+     *
+     * @param id          the certificate id which will be updated. Inferred from the request URI
+     * @param certificate the certificate with updated fields
+     * @return the updated certificate
+     */
+    @PatchMapping("/one-field/{id}")
+    @PreAuthorize("hasAuthority('authority:write')")
+    public CertificateDTO updateOneField(@PathVariable("id") long id, @RequestBody CertificateDTO certificate) {
+        if (!new GiftValidator().isUpdateOneFieldValid(certificate)) {
             throw new WrongParameterFormatException(MessageKey.WRONG_PARAM_FORMAT);
         }
         CertificateDTO found = certificateService.update(id, certificate);
@@ -105,6 +130,7 @@ public class CertificateController {
      * @param id the certificate id which will be deleted. Inferred from the request URI
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('authority:write')")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         certificateService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -126,6 +152,7 @@ public class CertificateController {
      * @return the list of found certificates
      */
     @GetMapping
+    @PreAuthorize("hasAuthority('authority:read')")
     public List<CertificateDTO> getCertificateByParams(@RequestParam(value = "name", required = false) String name,
                                                        @RequestParam(value = "tags_name", required = false) String[] tagNames,
                                                        @RequestParam(value = "description", required = false) String description,

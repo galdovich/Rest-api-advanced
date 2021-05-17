@@ -30,9 +30,13 @@ create table certificate_has_tag
 
 create table users
 (
-    id   bigint auto_increment
+    id bigint auto_increment
         primary key,
-    name varchar(255) null
+    name varchar(255) not null,
+    email varchar(255) not null,
+    password varchar(255) not null,
+    role varchar(20) default 'USER' not null,
+    status varchar(20) default 'ACTIVE' not null
 );
 
 create table certificate_orders

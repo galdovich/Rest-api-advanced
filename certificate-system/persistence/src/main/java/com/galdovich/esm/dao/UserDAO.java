@@ -1,6 +1,7 @@
 package com.galdovich.esm.dao;
 
 import com.galdovich.esm.entity.User;
+import java.util.Optional;
 
 /**
  * Interface {@code UserDAO} describes abstract behavior
@@ -17,4 +18,11 @@ public interface UserDAO extends GiftDAO<User> {
      * @return the user with highest cost of all orders
      */
     Long getByHighestCostOfAllOrders();
+
+    /**
+     * Gets user by name.
+     *
+     * @return optional user
+     */
+    Optional<User> getUserByEmail(String email);
 }

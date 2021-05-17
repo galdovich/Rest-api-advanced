@@ -10,8 +10,10 @@ import com.galdovich.esm.service.UserService;
 import com.galdovich.esm.util.HateoasData;
 import com.galdovich.esm.validator.GiftValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -47,6 +49,7 @@ public class UserController {
      * @return the list of found users
      */
     @GetMapping
+    @PreAuthorize("hasAuthority('authority:write')")
     public List<UserDTO> getAll(@RequestParam(required = false, defaultValue = "1") int page,
                                 @RequestParam(required = false, defaultValue = "5") int size) {
         PageDTO pageDTO = new PageDTO(page, size);
@@ -64,6 +67,7 @@ public class UserController {
      * @return the found user
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('authority:read')")
     public UserDTO getById(@PathVariable(name = "id") long id) {
         UserDTO found = userService.getById(id);
         addLinks(found);
@@ -79,6 +83,7 @@ public class UserController {
      * @return the found user
      */
     @GetMapping("/{id}/orders")
+    @PreAuthorize("hasAuthority('authority:read')")
     public List<OrderDTO> getUserOrders(@PathVariable(name = "id") long id,
                                         @RequestParam(required = false, defaultValue = "1") int page,
                                         @RequestParam(required = false, defaultValue = "5") int size) {

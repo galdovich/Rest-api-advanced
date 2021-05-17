@@ -2,16 +2,15 @@ package com.galdovich.esm.controller;
 
 import com.galdovich.esm.dto.PageDTO;
 import com.galdovich.esm.dto.TagDTO;
-import com.galdovich.esm.exception.MessageKey;
-import com.galdovich.esm.exception.WrongParameterFormatException;
 import com.galdovich.esm.service.TagService;
 import com.galdovich.esm.util.HateoasData;
-import com.galdovich.esm.validator.GiftValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -50,6 +49,7 @@ public class TagController {
      * @return the list of found certificates
      */
     @GetMapping
+    @PreAuthorize("hasAuthority('authority:write')")
     public List<TagDTO> getAll(@RequestParam(required = false, defaultValue = "1") int page,
                                @RequestParam(required = false, defaultValue = "5") int size) {
         PageDTO pageDTO = new PageDTO(page, size);
@@ -67,6 +67,7 @@ public class TagController {
      * @return the found tag
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('authority:read')")
     public TagDTO getById(@PathVariable("id") long id) {
         TagDTO foundTag = tagService.getById(id);
         addLinks(foundTag);
@@ -82,6 +83,7 @@ public class TagController {
      * @return the added tag
      */
     @PostMapping
+    @PreAuthorize("hasAuthority('authority:write')")
     public TagDTO add(@RequestBody TagDTO tagDTO) {
         TagDTO addedTag = tagService.add(tagDTO);
         addLinks(addedTag);
@@ -97,6 +99,7 @@ public class TagController {
      * @return the response entity
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('authority:write')")
     public ResponseEntity<Void> delete(@PathVariable long id) {
         tagService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -110,6 +113,7 @@ public class TagController {
      * @return the widely used tag
      */
     @GetMapping("/widely-used")
+    @PreAuthorize("hasAuthority('authority:write')")
     public TagDTO getWidelyUsedTag() {
         TagDTO foundTag = tagService.getMostPopularUserTagWithHighestOrderSum();
         addLinks(foundTag);

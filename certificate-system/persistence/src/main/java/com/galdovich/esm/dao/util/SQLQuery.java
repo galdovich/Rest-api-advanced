@@ -31,6 +31,7 @@ public class SQLQuery {
      * SQL query for {@link com.galdovich.esm.entity.User}
      */
     public static final String USER_GET_ALL = "select c from User c";
+    public static final String USER_GET_BY_EMAIL = "select u from User u where u.email=?1";
     public static final String USER_GET_ID_HIGHEST_ORDERS = "SELECT o.user_id from certificate_orders AS o " +
             "group by o.user_id order by sum(o.certificate_order_price) desc limit 1";
 

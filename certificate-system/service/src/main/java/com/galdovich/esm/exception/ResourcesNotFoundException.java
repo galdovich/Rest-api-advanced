@@ -17,4 +17,11 @@ public class ResourcesNotFoundException extends ServiceException {
     public ResourcesNotFoundException(String messageKey, String messageParameter) {
         super(messageKey, messageParameter);
     }
+
+    /**
+     * Instantiates a new not found exception.
+     */
+    public ResourcesNotFoundException() {
+        super();
+    }
 }
